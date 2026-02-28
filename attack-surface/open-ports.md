@@ -25,11 +25,40 @@ sudo ss -tulpen
 - Overall network attack surface is minimal after service hardening
 
 ## Defensive Actions
-- Disabled avahi-daemon to remove mDNS service discovery exposure
-- Disabled rpcbind and related RPC/NFS services to eliminate common attack targets
-- Disabled saned to prevent remote scanner access
-- Reviewed printing services and disabled where not required
-- Verified reduction of exposed services through repeated enumeration
+### avahi-daemon (mDNS):
+Disabled to remove service discovery exposure.
+```bash
+sudo service avahi-daemon stop
+sudo update-rc.d avahi-daemon disable
+```
+### rpcbind and RPC/NFS services:
+Disabled to eliminate common RPC-based attack targets.
+```bash
+sudo service rpcbind stop
+sudo update-rc.d rpcbind disable
+```
+
+```bash
+sudo service nfs-common stop
+sudo update-rc.d nfs-common disable
+```
+### saned (Scanner daemon):
+Disabled to prevent remote scanner access.
+```bash
+sudo service saned stop
+sudo update-rc.d saned disable
+```
+### Printing services (cups):
+Reviewed and disabled where not required.
+```bash
+sudo service cups stop
+sudo update-rc.d cups disable
+```
+### Verification:
+Attack surface reduction verified.
+```bash
+sudo ss -tulpen
+```
 
 ## Environment Notes
 - MX Linux uses SysVinit rather than systemd
